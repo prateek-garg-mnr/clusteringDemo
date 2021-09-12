@@ -1,4 +1,5 @@
 // cluster std package
+process.env.UV_THREADPOOL_SIZE = 1
 const cluster = require("cluster");
 
 // is file being executed in master mode?
@@ -6,8 +7,10 @@ const cluster = require("cluster");
 // false for other instance created form cluster.fork
 if (cluster.isMaster) {
   // Cause index.js to be executed *again* but in child mode
+  // KEEP THE COUNT OF CHILDREN EQUAL TO THE COUNT OF PHYSICAL CORES IN CPU 
+  // OR LOGICAL CORES
   cluster.fork();
-  cluster.fork();
+  cluster.fork()
 
 } else {
   // i am a child, i am going to act like a server and do nothing else
